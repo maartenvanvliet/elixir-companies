@@ -29,6 +29,10 @@ defmodule CompaniesWeb.Router do
   scope "/", CompaniesWeb do
     pipe_through [:browser, :set_locale]
 
+    if Mix.env() == :dev do
+      forward "/sent_emails", Bamboo.SentEmailViewerPlug
+    end
+
     get "/", CompanyController, :recent
     get "/browse", CompanyController, :index
   end
