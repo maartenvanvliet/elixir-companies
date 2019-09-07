@@ -27,7 +27,7 @@ defmodule CompaniesWeb.CompanyController do
     case Companies.create(params, current_user(conn)) do
       {:ok, _company} ->
         conn
-        |> put_flash(:info, "Company created successfully.")
+        |> put_flash(:info, "Thank you! An admin will approve your change shortly.")
         |> redirect(to: Routes.company_path(conn, :recent, locale(conn)))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -54,7 +54,7 @@ defmodule CompaniesWeb.CompanyController do
     case Companies.update(company, company_params, current_user(conn)) do
       {:ok, _company} ->
         conn
-        |> put_flash(:info, "Company updated successfully.")
+        |> put_flash(:info, "Thank you! Your changes will be reviewed shortly.")
         |> redirect(to: Routes.company_path(conn, :recent, locale(conn)))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -68,7 +68,7 @@ defmodule CompaniesWeb.CompanyController do
     {:ok, _company} = Companies.delete(company, current_user(conn))
 
     conn
-    |> put_flash(:info, "Company deleted successfully.")
+    |> put_flash(:info, "Thank you. Your delete request is awaiting approval")
     |> redirect(to: Routes.company_path(conn, :recent, locale(conn)))
   end
 end
