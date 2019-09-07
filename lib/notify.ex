@@ -18,9 +18,7 @@ defmodule Notify do
     |> Mailer.deliver_now()
   end
 
-  def perform(pending_change) do
-    apply(notifier(), :notify, [pending_change])
-  end
+  def perform(pending_change), do: apply(notifier(), :notify, [pending_change])
 
   defp notifier, do: Application.get_env(:companies, :notifier)
 end
