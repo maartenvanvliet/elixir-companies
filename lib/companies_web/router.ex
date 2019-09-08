@@ -10,14 +10,6 @@ defmodule CompaniesWeb.Router do
     plug CompaniesWeb.Plugs.Session
   end
 
-  pipeline :set_locale do
-    plug SetLocale, gettext: CompaniesWeb.Gettext, default_locale: "en"
-  end
-
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   pipeline :auth do
     plug CompaniesWeb.Plugs.Authorize
   end
@@ -26,23 +18,28 @@ defmodule CompaniesWeb.Router do
     plug CompaniesWeb.Plugs.Authorize, maintainer: true
   end
 
-  scope "/", CompaniesWeb do
-    pipe_through [:browser, :set_locale]
+  pipeline :set_locale do
+    plug SetLocale, gettext: CompaniesWeb.Gettext, default_locale: "en"
+  end
+
+  scope "/" do
+    pipe_through [:browser]
 
     if Mix.env() == :dev do
       forward "/sent_emails", Bamboo.SentEmailViewerPlug
     end
 
-    get "/", CompanyController, :recent
-    get "/browse", CompanyController, :index
-
-    scope("/auth") do
-      pipe_through [:browser]
-
+    scope "/auth", CompaniesWeb do
       get "/signout", AuthController, :signout
       get "/github", AuthController, :request
       get "/github/callback", AuthController, :callback
     end
+  end
+
+  scope "/", CompaniesWeb do
+    pipe_through [:browser, :set_locale]
+
+    get "/", CompanyController, :dummy # Never called, required for set_locale and `/` redirect
   end
 
   scope "/:locale/", CompaniesWeb do
