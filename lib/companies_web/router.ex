@@ -39,7 +39,8 @@ defmodule CompaniesWeb.Router do
   scope "/", CompaniesWeb do
     pipe_through [:browser, :set_locale]
 
-    get "/", CompanyController, :dummy # Never called, required for set_locale and `/` redirect
+    # Never called, required for set_locale and `/` redirect
+    get "/", CompanyController, :dummy
   end
 
   scope "/:locale/", CompaniesWeb do
