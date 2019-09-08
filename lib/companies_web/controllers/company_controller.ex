@@ -68,7 +68,7 @@ defmodule CompaniesWeb.CompanyController do
     {:ok, _company} = Companies.delete(company, current_user(conn))
 
     conn
-    |> put_flash(:info, "Thank you. Your delete request is awaiting approval")
+    |> put_flash(:info, "Thank you. Your delete request is awaiting approval.")
     |> redirect(to: Routes.company_path(conn, :recent, locale(conn)))
   end
 end

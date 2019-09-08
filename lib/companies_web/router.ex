@@ -35,6 +35,14 @@ defmodule CompaniesWeb.Router do
 
     get "/", CompanyController, :recent
     get "/browse", CompanyController, :index
+
+    scope("/auth") do
+      pipe_through [:browser]
+
+      get "/signout", AuthController, :signout
+      get "/github", AuthController, :request
+      get "/github/callback", AuthController, :callback
+    end
   end
 
   scope "/:locale/", CompaniesWeb do
@@ -56,13 +64,5 @@ defmodule CompaniesWeb.Router do
 
       resources "/pending", PendingChangeController
     end
-  end
-
-  scope "/auth", CompaniesWeb do
-    pipe_through [:browser]
-
-    get "/signout", AuthController, :signout
-    get "/github", AuthController, :request
-    get "/github/callback", AuthController, :callback
   end
 end
